@@ -1,8 +1,10 @@
 package com.practice1.conf.Customer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.BeanIds;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,43 +12,74 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.practice1.jwt.JwtAuthenticationTokenFilter;
+import com.practice1.service.iplm.JwtTokenProvider;
 
 @Configuration
 @EnableWebSecurity
-@Order(100)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	@Autowired
+	 private JwtTokenProvider tokenProvider;
+	@Autowired
+	    private UserDetailsServiceIplm customUserDetailsService;
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		return new UserDetailsServiceImpl();
-	}
+	  @Bean
+	    public UserDetailsService userDetailsService(){
+	        return new UserDetailsServiceIplm();
+	    }
+	  
+	  @Bean
+	    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() throws Exception{
+	        JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter = new JwtAuthenticationTokenFilter();
+	        jwtAuthenticationTokenFilter.setAuthenticationManager(authenticationManager());
+			return jwtAuthenticationTokenFilter;
+	    }
 
-	@Bean
-	public BCryptPasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	    @Bean
+	    public BCryptPasswordEncoder passwordEncoder(){
+	        return new BCryptPasswordEncoder();
+	    }
+	    
+	    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+	    @Override
+	    public AuthenticationManager authenticationManagerBean() throws Exception {
+	        // Get AuthenticationManager bean
+	        return super.authenticationManagerBean();
+	    }
 
-	@Bean
-	public DaoAuthenticationProvider getDaoAuthProvider() {
-		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
+	    @Bean
+	    public DaoAuthenticationProvider provider(){
+	        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+	        provider.setPasswordEncoder(passwordEncoder());
+	        provider.setUserDetailsService(userDetailsService());
+	        return provider;
+	    }
 
-		return daoAuthenticationProvider;
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(getDaoAuthProvider());
-	}
+	    @Override
+	    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	        auth.authenticationProvider(provider());
+	    }
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests()
-				.antMatchers("/*").permitAll()
-				.and().formLogin().loginPage("/signin").loginProcessingUrl("/login")
+		http.authorizeRequests().antMatchers("/admin/*")
+		
+		.hasRole("ADMIN")
+		.antMatchers("/*")
+		.permitAll()
+		.antMatchers("/lg").permitAll()
+		.and().formLogin().loginPage("/signin").loginProcessingUrl("/login")
 				.defaultSuccessUrl("/index").and().csrf().disable();
+		
+		
+		http.addFilterBefore(new JwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+		
+		
+		
 		
 
 	}

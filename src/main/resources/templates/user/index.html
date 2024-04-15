@@ -231,7 +231,7 @@
                                     All Categories
                                     <span class="arrow_carrot-down"></span>
                                 </div>
-                                <input type="text" id="search"  name="keyWord"  placeholder="What do yo u need?">
+                                <input type="text" id="search"  name="keyWord"  placeholder="What do you need?">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
@@ -305,11 +305,11 @@
                     </div>
                     <div class="featured__controls">
                         <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".oranges">Oranges</li>
-                            <li data-filter=".fresh-meat">Fresh Meat</li>
-                            <li data-filter=".vegetables">Vegetables</li>
-                            <li data-filter=".fastfood">Fastfood</li>
+                            <li class="active" data-filter="*"><a href="/index">All</a></li>
+                            <li><a th:href="@{/resultFind1/{type}(type='Thịt')}">Thịt</a></li>
+                            <li><a th:href="@{/resultFind1/{type}(type='Hoa quả')}">Hoa quả</a></li>
+                            <li><a th:href="@{/resultFind1/{type}(type='Rau')}">Rau</a></li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -329,46 +329,66 @@
     <div th:each="SanPham : ${SanPhams}" class="grid_1_of_4 images_1_of_4 products-info" style="margin-left: 45px;">
         <form th:action="@{/addItem}" method="post">
                   
-                                    <div class="product__discount__item" >
-                                        <div class="product__discount__item__pic set-bg" style="height: 300px">
-                                          <img height="300px" width="250px" th:src="@{'/getimage/'+${SanPham.photo}}" alt="Image">
-                                            <div class="product__discount__percent">-20%</div>
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                               <li><button style="border: 0; background-color: #f3f6fb;"><a href="#"><i class="fa fa-shopping-cart"></i></a></button></li>
-                                                <li><a th:href="@{/shop-details/{id}(id=${SanPham.id})}" data-toggle="tooltip" data-placement="right" title="View">
-                                                <i class="fas fa-eye"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <input type="hidden" th:value="${SanPham.id}" name="id">
+                                    
+                                
+                                
+                                
+                                <div class="product__discount__item">
+									<div class="product__discount__item__pic set-bg"
+										style="height: 300px">
+										<img height="300px" width="250px"
+											th:src="@{'/getimage/'+${SanPham.photo}}" alt="Image">
+										<div class="product__discount__percent" th:if="${SanPham.percentSale > 0}" th:utext="${SanPham.percentSale + '%'}"></div>
+										<ul class="product__item__pic__hover">
+											<li><a href="#"><i class="fa fa-heart"></i></a></li>
+											<li><button
+													style="border: 0; background-color: #f3f6fb;" type="submit">
+													<a href="#"><i class="fa fa-shopping-cart" ></i></a> 
+													<input type="hidden" th:value="${SanPham.id}" name="id">
+												</button></li>
+											<li><a th:href="@{/shop-details/{id}(id=${SanPham.id})}"
+												data-toggle="tooltip" data-placement="right" title="View">
+													<i class="fas fa-eye"></i>
+											</a></li>
+										</ul>
+									</div>
+									
+								</div>
 
-                                </div>
 
 
         </form>
     </div>
 </div>
 </div>
- <div th:if="${totalPages > 1}" style="margin-top: 50px;
-    margin-left: 126px;">
+ <div th:if="${totalPages > 1}" style="margin-top: 20px;
+    margin-left: 63px; margin-bottom: 30px;">
     <div class="row col-sm-10">
-        <div class="col-sm-2" style="font-size: 25px;">
+        <div class="total" style="font-size: 25px;"> 
             Total Rows: [[${totalItems}]]
         </div>
-        <div class="col-sm-1" style="font-size: 25px;">
-            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/index/' + ${i}}">[[${i}]]</a>
-      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
-            </span>
-        </div>
-        <div class="col-sm-1" style="font-size: 25px;">
-            <a th:if="${currentPage < totalPages}" th:href="@{'/index/' + ${currentPage + 1}}">Next</a>
-            <span th:unless="${currentPage < totalPages}">Next</span>
+        
+        
+        <div class="next" style="font-size: 25px; margin-left: 150px">
+            <a th:if="${currentPage > 1}" th:href="@{'/index/' + ${currentPage-1}}">Previous</a>
+            <span th:unless="${currentPage > 1}">Previous</span>
+            
         </div>
 
-        <div class="col-sm-1" style="font-size: 25px;">
-            <a th:if="${currentPage < totalPages}" th:href="@{'/index/' + ${totalPages}}">Last</a>
-            <span th:unless="${currentPage < totalPages}">Last</span>
+
+
+
+			<div style="font-size: 25px; margin-left: 40px; margin-right: 20px;">
+				<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
+					class="number" th:if="${currentPage9 != i}"
+					th:href="@{'/index/' + ${i}}">[[${i}]]</a> &nbsp; &nbsp;
+				</span>
+			</div>
+
+
+			<div class="Next" style="font-size: 25px;">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/index/' + ${totalPages}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
         </div>
     </div>
 </div>
@@ -399,197 +419,119 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="latest-product__text">
-                        <h4>Latest Products</h4>
+                        <h4>New Products</h4>
                         <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
+							<div class="latest-prdouct__slider__item"
+								th:each="newSp : ${newProduct}" style="display: grid">
+
+								<form th:action="@{/addItem}" method="post">
+
+									<div >
+
+										 <div class="latest-product__item__pic">
+                                        
+												<a href="#"
+													th:href="@{/shop-details/{id}(id=${newSp.id})}"
+													 title="View"><img height="120px" width="110px"
+												th:src="@{'/getimage/'+${newSp.photo}}" alt="Image"></a>
+												<div class="sale_off" th:if="${newSp.percentSale > 0}" th:utext="${newSp.percentSale + '%'}"></div>
+											
+                                        </div>
+                                        <br>
+                                        
+                                        <div class="latest-product__item__text">
+                                        <h6 th:text="${newSp.nameProduct}"></h6>
+                                        <span th:text="${newSp.price - newSp.price*(newSp.percentSale/100)}"></span>
+                                      
                                     </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-2.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-3.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-2.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-3.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                                    
+										<input type="hidden" th:if="${newSp.id != null}" th:value="${newSp.id}" name="id">
+									</div>
+
+								</form>
+
+							</div>
+
+
+						</div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="latest-product__text">
-                        <h4>Top Rated Products</h4>
-                        <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-2.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-3.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-2.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-3.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
+               <div class="col-lg-4 col-md-6">
                     <div class="latest-product__text">
                         <h4>Review Products</h4>
                         <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
+							<div class="latest-prdouct__slider__item"
+								th:each="newSp : ${newProduct2}" style="display: grid">
+
+								<form th:action="@{/addItem}" method="post">
+
+									<div >
+
+										 <div class="latest-product__item__pic">
+                                        
+												<a href="#"
+													th:href="@{/shop-details/{id}(id=${newSp.id})}"
+													 title="View"><img height="120px" width="110px"
+												th:src="@{'/getimage/'+${newSp.photo}}" alt="Image"></a>
+												<div class="sale_off" th:if="${newSp.percentSale > 0}" th:utext="${newSp.percentSale + '%'}"></div>
+											
+                                        </div>
+                                        <br>
+                                        
+                                        <div class="latest-product__item__text">
+                                        <h6 th:text="${newSp.nameProduct}"></h6>
+                                        <span th:text="${newSp.price - newSp.price*(newSp.percentSale/100)}"></span>
                                     </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
+                                    
+										<input type="hidden" th:if="${newSp.id != null}" th:value="${newSp.id}" name="id">
+									</div>
+
+								</form>
+
+							</div>
+
+
+						</div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="latest-product__text">
+                        <h4>Top Rate Products</h4>
+                        <div class="latest-product__slider owl-carousel">
+							<div class="latest-prdouct__slider__item"
+								th:each="newSp1 : ${newProduct1}" style="display: grid">
+
+								<form th:action="@{/addItem}" method="post">
+
+									<div >
+
+										 <div class="latest-product__item__pic">
+                                        
+												<a href="#"
+													th:href="@{/shop-details/{id}(id=${newSp1.id})}"
+													 title="View"><img height="120px" width="110px"
+												th:src="@{'/getimage/'+${newSp1.photo}}" alt="Image"></a>
+													<div class="sale_off" th:if="${newSp1.percentSale > 0}" th:utext="${newSp1.percentSale + '%'}"></div>
+												
+											
+                                        </div>
+                                        <br>
+                                        
+                                        <div class="latest-product__item__text">
+                                        <h6 th:text="${newSp1.nameProduct}"></h6>
+                                  
+                                        <span  th:text="${newSp1.price - newSp1.price*(newSp1.percentSale/100)}"></span>
                                     </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-2.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-3.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-2.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-3.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                                    
+										<input type="hidden" th:if="${newSp1.id != null}" th:value="${newSp1.id}" name="id">
+									</div>
+
+								</form>
+
+							</div>
+
+
+						</div>
                     </div>
                 </div>
             </div>

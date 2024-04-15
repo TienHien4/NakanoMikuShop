@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.practice1.entities.CartItem;
 import com.practice1.entities.SanPham;
 import com.practice1.entities.ShoppingCart;
-import com.practice1.entities.User;
+import com.practice1.entities.Customer;
 import com.practice1.repository.CartItemRepository;
 import com.practice1.repository.ShoppingCartRepository;
 import com.practice1.service.ShoppingCartService;
@@ -22,11 +22,28 @@ public class ShoppingCartServiceIplm implements ShoppingCartService{
 	CartItemRepository itemRepo;
 	
 	
+	@Override
+	public ShoppingCart reduceItem(SanPham sp, Customer customer) {
+		ShoppingCart cart = customer.getShoppingCart();
+		Set<CartItem> cartItems = cart.getCartItem();
+		CartItem cartItem = findCartItem(cartItems, sp.getId());
+		cartItem.setQuantity(cartItem.getQuantity() - 1);
+		cartItem.setTotalPrice(cartItem.getTotalPrice() - sp.getPrice());
+		itemRepo.save(cartItem);
+		int totalQuantity = totalItems(cartItems);
+	    double totalPrices = totalPrice(cartItems);
+	    cart.setTotalItems(totalQuantity);
+	    cart.setTotalPrices(totalPrices);
+	    cart.setCustomer(customer);
+        return cartRepo.save(cart);
+	}
+	
+	
 	
 	
 
 	@Override
-	public ShoppingCart addItem(SanPham sp, int quantity, User customer) {
+	public ShoppingCart addItem(SanPham sp, int quantity, Customer customer) {
 		ShoppingCart cart = customer.getShoppingCart();
 		if(cart==null) {
 			cart = new ShoppingCart();
@@ -38,7 +55,7 @@ public class ShoppingCartServiceIplm implements ShoppingCartService{
 	    	 cartItem = new CartItem();
 	    	 cartItem.setSp(sp);
 	    	 cartItem.setQuantity(quantity);
-	    	 cartItem.setTotalPrice(quantity*sp.getPrice());
+	    	 cartItem.setTotalPrice(quantity*sp.getPrice() - quantity*sp.getPrice()*(sp.getPercentSale()/100));
 	    	 cartItem.setCart(cart);
 	    	 cartItems.add(cartItem);
              itemRepo.save(cartItem);
@@ -46,7 +63,7 @@ public class ShoppingCartServiceIplm implements ShoppingCartService{
 	    	if(cartItem==null) {
                 cartItem = new CartItem();
                 cartItem.setSp(sp);
-                cartItem.setTotalPrice(quantity * sp.getPrice());
+                cartItem.setTotalPrice(quantity * sp.getPrice() - quantity*sp.getPrice()*(sp.getPercentSale()/100));
                 cartItem.setQuantity(quantity);
                 cartItem.setCart(cart);
                 cartItems.add(cartItem);
@@ -54,7 +71,7 @@ public class ShoppingCartServiceIplm implements ShoppingCartService{
 	    	}
 	    	else {
 	    		cartItem.setQuantity(cartItem.getQuantity() + quantity);
-	    		cartItem.setTotalPrice(cartItem.getTotalPrice() + (quantity*sp.getPrice()));
+	    		cartItem.setTotalPrice(cartItem.getTotalPrice() + (quantity*sp.getPrice() - quantity*sp.getPrice()*(sp.getPercentSale()/100)));
 	    		itemRepo.save(cartItem);
 	    	}
         }
@@ -72,15 +89,25 @@ public class ShoppingCartServiceIplm implements ShoppingCartService{
 
 
 	@Override
-	public ShoppingCart updateItem(SanPham sp, int quantity, User customer) {
+	public ShoppingCart updateItem(SanPham sp, int quantity, Customer customer) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ShoppingCart deleteItem(SanPham sp, User customer) {
-		// TODO Auto-generated method stub
-		return null;
+	public ShoppingCart deleteItem(SanPham sp, Customer customer) {
+		ShoppingCart cart = customer.getShoppingCart();
+		Set<CartItem> cartItems = cart.getCartItem();
+		CartItem cartItem = findCartItem(cartItems, sp.getId());
+		cartItems.remove(cartItem);
+		itemRepo.delete(cartItem);
+		int totalQuantity = totalItems(cartItems);
+	    double totalPrices = totalPrice(cartItems);
+	    cart.setTotalItems(totalQuantity);
+	    cart.setTotalPrices(totalPrices);
+	    cart.setCustomer(customer);
+        return cartRepo.save(cart);
+		
 	}
 	private CartItem findCartItem(Set<CartItem> cartItems, int productId) {
         if (cartItems == null) {
@@ -118,6 +145,7 @@ public class ShoppingCartServiceIplm implements ShoppingCartService{
 		
 		return (List<CartItem>) itemRepo.findAll();
 	}
+
 
 
 

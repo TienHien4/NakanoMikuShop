@@ -30,11 +30,11 @@ public class ShoppingCart {
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-	private User customer;
+	private Customer customer;
 	public ShoppingCart() {
 		super();
 	}
-	public ShoppingCart(int id, int totalItems, double totalPrices, Set<CartItem> cartItem, User customer) {
+	public ShoppingCart(int id, int totalItems, double totalPrices, Set<CartItem> cartItem, Customer customer) {
 		super();
 		this.id = id;
 		this.totalItems = totalItems;
@@ -66,10 +66,10 @@ public class ShoppingCart {
 	public void setCartItem(Set<CartItem> cartItem) {
 		this.cartItem = cartItem;
 	}
-	public User getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
-	public void setCustomer(User customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 	

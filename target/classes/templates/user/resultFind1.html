@@ -153,7 +153,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="/shoping-cart"><i class="fa fa-shopping-bag"></i> <span ></span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
@@ -234,11 +234,11 @@
                     </div>
                     <div class="featured__controls">
                         <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".oranges">Oranges</li>
-                            <li data-filter=".fresh-meat">Fresh Meat</li>
-                            <li data-filter=".vegetables">Vegetables</li>
-                            <li data-filter=".fastfood">Fastfood</li>
+                        
+                         <li ><a href="/index">All</a></li>
+                            <li ><a th:href="@{/resultFind1/{type}(type='Thịt')}">Thịt</a></li>
+                            <li ><a th:href="@{/resultFind1/{type}(type='Hoa quả')}">Hoa quả</a></li>
+                            <li ><a th:href="@{/resultFind1/{type}(type='Rau')}">Rau</a></li>
                         </ul>
                     </div>
                 </div>
@@ -279,29 +279,7 @@
 </div>
 
 </div>
- <div th:if="${totalPages > 1}" style="margin-top: 50px;
-    margin-left: 126px;">
-    <div class="row col-sm-10">
-        <div class="col-sm-2" style="font-size: 25px;">
-            Total Rows: [[${totalItems}]]
-        </div>
-        <div class="col-sm-1" style="font-size: 25px;">
-            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/index/' + ${i}}">[[${i}]]</a>
-      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
-            </span>
-        </div>
-        <div class="col-sm-1" style="font-size: 25px;">
-            <a th:if="${currentPage < totalPages}" th:href="@{'/index/' + ${currentPage + 1}}">Next</a>
-            <span th:unless="${currentPage < totalPages}">Next</span>
-        </div>
 
-        <div class="col-sm-1" style="font-size: 25px;">
-            <a th:if="${currentPage < totalPages}" th:href="@{'/index/' + ${totalPages}}">Last</a>
-            <span th:unless="${currentPage < totalPages}">Last</span>
-        </div>
-    </div>
-</div>
 		
  
   

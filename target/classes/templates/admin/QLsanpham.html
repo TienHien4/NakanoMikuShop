@@ -59,7 +59,7 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="#"><i class="fa fa-user-circle" aria-hidden="true"></i> QUẢN
-                    LÝ NHÂN VIÊN</a>
+                    LÝ SẢN PHẨM</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -112,6 +112,7 @@
             <th>product Information</th>  
             <th>Weight</th>
             <th>Type</th>
+            <th>Sale</th>
             <th>Price</th>
             <th>Optional</th>   
         
@@ -123,11 +124,12 @@
             <td th:utext="${SanPham.nameProduct}"></td>  
             <td th:utext="${SanPham.productInformation}"></td>
             <td th:utext="${SanPham.weight}"></td>
-            <td th:utext="${SanPham.type}"></td>  
-            <td th:utext="${SanPham.price}"></td>
+            <td th:utext="${SanPham.type}"></td>
+            <td th:text="${SanPham.percentSale + '%'}"></td>
+            <td th:utext="${SanPham.price - SanPham.price*(SanPham.percentSale/100)}"></td>
              <td>
                     
-                        <a th:href="@{/admin/edit/{id}(id=${SanPham.id})}" class="edit" title="Sửa" data-toggle="tooltip"><i class="fa fa-pencil"
+                        <a th:href="@{/admin/home/edit/{id}(id=${SanPham.id})}" class="edit" title="Sửa" data-toggle="tooltip"><i class="fa fa-pencil"
                                 aria-hidden="true"></i></a>
                         <a th:href="@{/delete/{id}(id=${SanPham.id})}" class="delete" title="Xóa" data-toggle="tooltip"><i class="fa fa-trash-o"
                                 aria-hidden="true"></i></a>

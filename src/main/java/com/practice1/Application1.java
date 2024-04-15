@@ -2,11 +2,10 @@ package com.practice1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
-public class Application {
+public class Application1 {
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(Application1.class, args);
 	}
 
 }

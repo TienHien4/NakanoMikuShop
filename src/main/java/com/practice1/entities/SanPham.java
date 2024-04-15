@@ -32,13 +32,16 @@ public class SanPham {
 	@Column(name="price")
 	private double price;
 	
+	@Column(name="sale")
+	private double percentSale;
+	
 
 	public SanPham() {
 		super();
 	}
 
 	public SanPham(int id, String photo, String nameProduct, String productInformation, double weight, String type,
-			double price) {
+			double price, double percentSale) {
 		super();
 		this.id = id;
 		this.photo = photo;
@@ -47,6 +50,7 @@ public class SanPham {
 		this.weight = weight;
 		this.type = type;
 		this.price = price;
+		this.percentSale = percentSale;
 	}
 
 
@@ -105,6 +109,15 @@ public class SanPham {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
+
+	public double getPercentSale() {
+		return percentSale;
+	}
+
+	public void setPercentSale(double percentSale) {
+		this.percentSale = percentSale;
+	}
+	
 	
 	
 	

@@ -18,6 +18,8 @@ public class SanPhamDto {
 
 	private double price;
 	
+	private double percentSale;
+	
 
 	public SanPhamDto() {
 		super();
@@ -25,7 +27,7 @@ public class SanPhamDto {
 
 
 	public SanPhamDto(int id, MultipartFile photo, String nameProduct, String productInformation, double weight,
-			String type, double price) {
+			String type, double price, double percentSale) {
 		super();
 		this.id = id;
 		this.photo = photo;
@@ -34,6 +36,7 @@ public class SanPhamDto {
 		this.weight = weight;
 		this.type = type;
 		this.price = price;
+		this.percentSale = percentSale;
 	}
 
 
@@ -104,6 +107,16 @@ public class SanPhamDto {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+
+	public double getPercentSale() {
+		return percentSale;
+	}
+
+
+	public void setPercentSale(double percentSale) {
+		this.percentSale = percentSale;
 	}
 
 	

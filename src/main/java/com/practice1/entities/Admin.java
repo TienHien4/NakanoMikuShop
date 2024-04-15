@@ -24,31 +24,31 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_id")
     private Long id;
-
+    @Column
     private String firstName;
-
+    @Column
     private String lastName;
-
+    @Column
     private String username;
-    
+    @Column
     private String email;
-
+    @Column
     private String password;
     
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
         name = "roles_ad",
         joinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "admin_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
-    private List<Role> roles;
+    private Collection<Role> roles;
 
 	public Admin() {
 		super();
 	}
 
 	public Admin(Long id, String firstName, String lastName, String username, String email, String password,
-			List<Role> roles) {
+			Collection<Role> roles) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -107,11 +107,11 @@ public class Admin {
 		this.password = password;
 	}
 
-	public List<Role> getRoles() {
+	public Collection<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
 

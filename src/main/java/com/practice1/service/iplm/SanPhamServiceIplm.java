@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
 import com.practice1.entities.SanPham;
@@ -90,6 +91,14 @@ public class SanPhamServiceIplm implements SanPhamService{
 		
 		return (List<SanPham>) spRepo.findAll();
 	}
+	
+	
+	@Override
+	public List<SanPham> getNewSP() {
+		
+		return (List<SanPham>) spRepo.newProduct();
+	}
+	
 
 
 	@Override
@@ -103,6 +112,40 @@ public class SanPhamServiceIplm implements SanPhamService{
 		List<SanPham> listProduct = spRepo.searchSP(keyWord);
 		return listProduct;
 	}
+
+	@Override
+	public List<SanPham> sortByPriceAsc() {
+		List<SanPham> listProducts = spRepo.sortByPriceASC();
+		return listProducts;
+	}
+
+	@Override
+	public List<SanPham> sortByPriceDesc() {
+		List<SanPham> listProducts = spRepo.sortByPriceDESC();
+		return listProducts;
+	}
+
+	@Override
+	public Page<SanPham> sortByPriceAsc(int pageNo, int pageSize, String sortBy) {
+		Pageable pageable = PageRequest.of(pageNo -  1, pageSize, Sort.by(sortBy));
+		return spRepo.findAll(pageable);
+	}
+
+	@Override
+	public Page<SanPham> sortByPriceDesc(int pageNo, int pageSize, String sortBy) {
+		Pageable pageable = PageRequest.of(pageNo -  1, pageSize, Sort.by(sortBy));
+		return spRepo.sortByPriceDesc(pageable);
+	}
+
+	@Override
+	public Page<SanPham> findSpByText1(int pageNo, int pageSize, String text) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		return spRepo.searchSP1(text, pageable);
+	}
+
+	
+
+	
 
 
 

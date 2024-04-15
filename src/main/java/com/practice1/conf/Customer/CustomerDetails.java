@@ -8,13 +8,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.practice1.entities.Role;
-import com.practice1.entities.User;
+import com.practice1.entities.Customer;
 
 public class CustomerDetails implements UserDetails {
 
-	private User user;
+	private Customer user;
 
-	public CustomerDetails(User user) {
+	public CustomerDetails(Customer user) {
 		super();
 		this.user = user;
 	}
@@ -22,7 +22,7 @@ public class CustomerDetails implements UserDetails {
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for(Role role : user.getRoles()){
+        for(Role role : user.getVaitro()){
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
         return authorities;

@@ -1,10 +1,6 @@
 package com.practice1.entities;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +17,7 @@ import lombok.Data;
 
 @Data
 @Entity(name = "NguoiDung")
-public class User {
+public class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,23 +38,23 @@ public class User {
 	@Column
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "customer_roles", joinColumns = @JoinColumn(name ="customer_id", referencedColumnName = "customer_id"),
 	   inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
-	private Collection<Role> roles;
+    private Collection<Role> vaitro;
 	
 	
     @OneToOne(mappedBy = "customer")
     private ShoppingCart shoppingCart;    
 	
 
-	public User() {
+	public Customer() {
 		super();
 	}
 
 
-	public User(int id, String fullName, String sex, String address, String phoneNumber, String email, String username,
-			String password, Collection<Role> roles, ShoppingCart shoppingCart) {
+	public Customer(int id, String fullName, String sex, String address, String phoneNumber, String email, String username,
+			String password, Collection<Role> vaitro, ShoppingCart shoppingCart) {
 		super();
 		this.id = id;
 		this.fullName = fullName;
@@ -68,7 +64,7 @@ public class User {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.roles = roles;
+		this.vaitro = vaitro;
 		this.shoppingCart = shoppingCart;
 	}
 
@@ -153,13 +149,13 @@ public class User {
 	}
 
 
-	public Collection<Role> getRoles() {
-		return roles;
+	public Collection<Role> getVaitro() {
+		return vaitro;
 	}
 
 
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
+	public void setVaitro(Collection<Role> vaitro) {
+		this.vaitro = vaitro;
 	}
 
 
@@ -171,6 +167,9 @@ public class User {
 	public void setShoppingCart(ShoppingCart shoppingCart) {
 		this.shoppingCart = shoppingCart;
 	}
+
+
+	
 
 	
 	

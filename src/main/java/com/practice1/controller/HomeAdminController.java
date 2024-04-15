@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.practice1.dto.SanPhamDto;
 import com.practice1.entities.Admin;
 import com.practice1.entities.SanPham;
-import com.practice1.entities.User;
+import com.practice1.entities.Customer;
 import com.practice1.repository.AdminRepository;
 import com.practice1.repository.SanPhamRepository;
 import com.practice1.service.AdminService;
@@ -117,7 +117,7 @@ public class HomeAdminController {
 				e.printStackTrace();
 				
 			}
-			sp = new SanPham(spDTO.getId(), image, spDTO.getNameProduct(), spDTO.getProductInformation(), spDTO.getWeight(), spDTO.getType(), spDTO.getPrice());
+			sp = new SanPham(spDTO.getId(), image, spDTO.getNameProduct(), spDTO.getProductInformation(), spDTO.getWeight(), spDTO.getType(), spDTO.getPrice(), spDTO.getPercentSale());
 			spService.saveSp(sp);
 			 return "redirect:/admin/home";
 		}
@@ -138,12 +138,12 @@ public class HomeAdminController {
 		      input = new FileInputStream(file);
 		      MultipartFile multiPhoto =
 		          new MockMultipartFile("file", file.getName(), "text/plain", org.apache.commons.io.IOUtils.toByteArray(input));
-		      dto = new SanPhamDto(sp.getId(), multiPhoto, sp.getNameProduct(), sp.getProductInformation(), sp.getWeight(), sp.getType(), sp.getPrice());
+		      dto = new SanPhamDto(sp.getId(), multiPhoto, sp.getNameProduct(), sp.getProductInformation(), sp.getWeight(), sp.getType(), sp.getPrice(), sp.getPercentSale());
 		    } catch (FileNotFoundException e) {
-		      // TODO Auto-generated catch block
+		     
 		      e.printStackTrace();
 		    } catch (IOException e) {
-		      // TODO Auto-generated catch block
+		 
 		      e.printStackTrace();
 		    }
 		 }else {
@@ -168,7 +168,7 @@ public class HomeAdminController {
 				e.printStackTrace();
 				
 			}
-			sp = new SanPham(spDTO.getId(), image, spDTO.getNameProduct(), spDTO.getProductInformation(), spDTO.getWeight(), spDTO.getType(), spDTO.getPrice());
+			sp = new SanPham(spDTO.getId(), image, spDTO.getNameProduct(), spDTO.getProductInformation(), spDTO.getWeight(), spDTO.getType(), spDTO.getPrice(), spDTO.getPercentSale());
 			spService.saveSp(sp);
 		return "redirect:/admin/home";
 	}

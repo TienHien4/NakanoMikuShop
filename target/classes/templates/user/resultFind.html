@@ -152,7 +152,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="/shoping-cart"><i class="fa fa-shopping-bag"></i> <span ></span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
@@ -176,9 +176,10 @@
                             <span>All departments</span>
                         </div>
                         <ul>
-                             <li><a href="#">Thịt</a></li>
-                            <li><a href="#">Hoa quả</a></li>
-                            <li><a href="#">Rau</a></li>
+                 <li><a th:href="@{/resultFind1/{type}(type='Thịt')}">Thịt</a></li>
+                            <li><a th:href="@{/resultFind1/{type}(type='Hoa quả')}">Hoa quả</a></li>
+                            <li><a th:href="@{/resultFind1/{type}(type='Rau')}">Rau</a></li>
+
 
                         </ul>
                     </div>
@@ -231,15 +232,7 @@
                     <div class="section-title">
                         <h2>Featured Product</h2>
                     </div>
-                    <div class="featured__controls">
-                        <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".oranges">Oranges</li>
-                            <li data-filter=".fresh-meat">Fresh Meat</li>
-                            <li data-filter=".vegetables">Vegetables</li>
-                            <li data-filter=".fastfood">Fastfood</li>
-                        </ul>
-                    </div>
+                    
                 </div>
             </div>
             
@@ -285,7 +278,7 @@
         </div>
         <div class="col-sm-1" style="font-size: 25px;">
             <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/index/' + ${i}}">[[${i}]]</a>
+      <a class="number" th:if="${currentPage != i}" th:href="@{'/index/' + ${i}}">[[${i}]]</a>
       <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
             </span>
         </div>

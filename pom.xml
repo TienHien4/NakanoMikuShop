@@ -50,6 +50,12 @@
 			<version>2.6</version>
 		</dependency>
 
+	<dependency>
+		<groupId>org.mapstruct</groupId>
+		<artifactId>mapstruct</artifactId>
+		<version>1.6.0.Beta1</version>
+	</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -76,6 +82,12 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
+		 <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>4.20</version>
+        </dependency>
+		
 		
 	</dependencies>
 
@@ -90,13 +102,7 @@
         <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>4.4.0</version>
-        <executions>
-            <execution>
-                <goals>
-                    <goal>export</goal>
-                </goals>
-            </execution>
-        </executions>
+        
         <configuration>
             <jdbcMetaDataExporter>true</jdbcMetaDataExporter>
             <exportedPackages>

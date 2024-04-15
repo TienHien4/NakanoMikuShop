@@ -21,5 +21,13 @@ public interface SanPhamService {
 	 List<SanPham> getAllSP();
 	 SanPham findSpById(int id);
 	 List<SanPham> findSpByText(String text);
+	 List<SanPham> sortByPriceAsc();
+	 Page<SanPham> sortByPriceAsc(int pageNo, int pageSize, String sortBy);
+	 List<SanPham> sortByPriceDesc();
+	 Page<SanPham> sortByPriceDesc(int pageNo, int pageSize, String sortBy);
+	List<SanPham> getNewSP();
+	Page<SanPham> findSpByText1(int pageNo, int pageSize, String text);
+
+
 
 }
