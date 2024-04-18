@@ -19,8 +19,7 @@ import com.practice1.service.iplm.JwtTokenProvider;
 @Component
 public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter{
 	private final static String TOKEN_HEADER = "Authorization";
-	@Autowired
-	private JwtTokenProvider jwt;
+	private final JwtTokenProvider jwt = new JwtTokenProvider();
 	@Autowired
 	private UserDetailsServiceIplm userService;
 	@Override

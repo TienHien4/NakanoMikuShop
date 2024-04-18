@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.practice1.jwt.JwtAuthenticationTokenFilter;
 import com.practice1.service.iplm.JwtTokenProvider;
@@ -42,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        return new BCryptPasswordEncoder();
 	    }
 	    
-	    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+	    @Bean
 	    @Override
 	    public AuthenticationManager authenticationManagerBean() throws Exception {
 	        // Get AuthenticationManager bean
@@ -66,16 +65,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests().antMatchers("/admin/*")
-		
 		.hasRole("ADMIN")
 		.antMatchers("/*")
 		.permitAll()
-		.antMatchers("/lg").permitAll()
+		.antMatchers("/signin").permitAll()
 		.and().formLogin().loginPage("/signin").loginProcessingUrl("/login")
 				.defaultSuccessUrl("/index").and().csrf().disable();
 		
 		
-		http.addFilterBefore(new JwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		
 		

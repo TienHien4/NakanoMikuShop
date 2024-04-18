@@ -14,43 +14,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.practice1.conf.Customer.CustomerDetails;
-import com.practice1.dto.AdminDto;
-import com.practice1.dto.LoginResponse;
 import com.practice1.dto.UserDto;
-import com.practice1.dto.UserResponse;
-import com.practice1.dto.loginRequest;
-import com.practice1.entities.Admin;
-import com.practice1.entities.Role;
 import com.practice1.entities.Customer;
-import com.practice1.service.AdminService;
 import com.practice1.service.UserService;
 import com.practice1.service.iplm.JwtTokenProvider;
 
-@RestController
-@Validated
+@Controller
 public class HomeController {
 	@Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtTokenProvider jwtService;
+    private JwtTokenProvider jwtService = new JwtTokenProvider();
 	
 
 	@Autowired
 	private UserService userService;
 	
-	
-	@GetMapping("/signin")
-	public String Login()
-	{
-		return "home/login";
-	}
 	
 	@GetMapping("/register")
 	public String Register(Model model)
@@ -67,48 +50,36 @@ public class HomeController {
 		return "home/login";
 	}
 	
-	@PostMapping(value = "/rest/signin")
-	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody Customer user) {
-		String result = "";
-		HttpStatus httpStatus = null;
-		try {
-			if (userService.checkLogin(user)) {
-				result = jwtService.generateToken(user.getUsername());
-				httpStatus = HttpStatus.OK;
-			} else {
-				result = "Wrong userId and password";
-				httpStatus = HttpStatus.BAD_REQUEST;
-			}
-		} catch (Exception ex) {
-			result = "Server Error";
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<String>(result, httpStatus);
+	@GetMapping("/signin")
+	public String Login()
+	{
+		return "home/login";
 	}
 	
+	  @PostMapping("/login")
+	    public ModelAndView login(HttpServletRequest request, Customer user) {
+	        ModelAndView modelAndView = new ModelAndView();
+	        try {
+	            if (userService.checkLogin(user)) {
+	                String token = jwtService.generateToken(user.getUsername());
+	                // Đăng nhập thành công, chuyển hướng đến trang "user/index"
+	                modelAndView.setViewName("redirect:/user/index");
+	                // Lưu token vào session hoặc cookie nếu cần thiết
+	                // request.getSession().setAttribute("token", token);
+	            } else {
+	                // Đăng nhập thất bại, trả về trang đăng nhập với thông báo lỗi
+	                modelAndView.addObject("error", "Wrong userId and password");
+	                modelAndView.setViewName("home/login");
+	            }
+	        } catch (Exception ex) {
+	            // Xử lý lỗi nếu có
+	            modelAndView.addObject("error", "Server Error");
+	            modelAndView.setViewName("home/login");
+	        }
+	        return modelAndView;
+	    }
 	
-//	@PostMapping("/createUser")
-//	public String createuser(@ModelAttribute Customer user, HttpSession session) {
-//
-//		// System.out.println(user);
-//
-//		boolean f = userService.checkEmail(user.getEmail());
-//
-//		if (f) {
-//			session.setAttribute("msg", "Email Id alreday exists");
-//		}
-//
-//		else {
-//			Customer userDtls = userService.createUser(user);
-//			if (userDtls != null) {
-//				session.setAttribute("msg", "Register Sucessfully");
-//			} else {
-//				session.setAttribute("msg", "Something wrong on server");
-//			}
-//		}
-//
-//		return "redirect:/home/register";
-//	}
+	
 
 }
 

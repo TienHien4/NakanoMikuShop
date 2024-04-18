@@ -2,7 +2,6 @@ package com.practice1.service.iplm;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -15,7 +14,6 @@ import com.nimbusds.jwt.SignedJWT;
 
 
 @Service
-@ComponentScan
 public class JwtTokenProvider {
 	
 	

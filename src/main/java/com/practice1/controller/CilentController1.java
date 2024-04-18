@@ -49,7 +49,7 @@ public class CilentController1 {
 
 	
 // Get danh sach san pham(phan trang)
-	@GetMapping("/index")
+	@GetMapping({"/index", "/"})
 	public String index(Model model) {
 		return findPaginated(1, model);
    }
@@ -124,15 +124,7 @@ public class CilentController1 {
 		return "user/shoping-cart";
 	}
 	
-	@ModelAttribute("shoppingCart")
-	public ShoppingCart getShoppingCart(Principal principal) {
-	    if (principal != null) {
-	        String username = principal.getName();
-	        Customer customer = userRepo.findByUsername(username);
-	        return customer.getShoppingCart();
-	    }
-	    return null;
-	}
+	
 	
 	// Add san pham vao cart
 	@PostMapping(value = "/addItem")
